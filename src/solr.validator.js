@@ -92,7 +92,6 @@ solrValidator.prototype = {
         this.checkQuestionMarkNotAllowed();
         this.checkPlusMinus();
         this.checkDoubleOR();
-        this.checkInvalidNot();
     },
 
     checkNormal: function () {
@@ -119,7 +118,6 @@ solrValidator.prototype = {
         this.checkExclamationMark();
         this.checkQuestionMark();
         this.checkColon();
-        this.checkInvalidNot();
         this.checkDoubleOR();
         this.checkDoubleAND();
         this.checkPlusMinus();
@@ -474,19 +472,6 @@ solrValidator.prototype = {
                 if (this.errorMessages.indexOf($.solrValidatorMessages.get("InvalidPlusMinusUsage")) == -1) {
                     this.errorMessages.push($.solrValidatorMessages.get("InvalidPlusMinusUsage"));
                 }
-            }
-        }
-    },
-
-    checkInvalidNot: function (queryToCheck) {
-        queryToCheck = typeof queryToCheck !== 'undefined' ? queryToCheck : this.query;
-        if (this.UseConsoleLog) {
-            console.log("checkInvalidNot", queryToCheck)
-        }
-        matches = queryToCheck.match(/(OR( )*-|OR( )*NOT)/g);
-        if (matches != null && matches.length > 0) {
-            if (this.errorMessages.indexOf($.solrValidatorMessages.get("InvalidNot")) == -1) {
-                this.errorMessages.push($.solrValidatorMessages.get("InvalidNot"));
             }
         }
     },
