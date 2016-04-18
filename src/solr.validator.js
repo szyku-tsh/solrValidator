@@ -105,7 +105,6 @@ solrValidator.prototype = {
         this.checkQuotes();
         this.checkAsterisk();
         this.checkStartingWithAWildCard();
-        this.checkStartingWithANot();
         this.checkORInParenthesisBegin();
         this.checkORInParenthesisEnd();
         this.checkANDInParenthesis();
@@ -242,35 +241,6 @@ solrValidator.prototype = {
             }
         }
     },
-
-    checkStartingWithANot: function (queryToCheck) {
-        queryToCheck = typeof queryToCheck !== 'undefined' ? queryToCheck : this.query;
-        if (this.UseConsoleLog) {
-            console.log("checkStartingWithANot (1)", queryToCheck)
-        }
-        // check beginning of query
-        matches = queryToCheck.match(/^[-](\s){0,}[a-zA-Z0-9\x80-\xFF_+\-:.()~\^\"*?&|!{}\[\]\\@#\/$%'= \r\n“”‘???’?„?”]|^([N|n][O|o][T|t])(\s{1,})([a-zA-Z0-9\x80-\xFF_+\-:.()~\^"*?&|!{}\[\]\\@#\/$%'= \r\n“”‘???’?„?”]{0,})$/);
-        if (matches != null) {
-            if (this.errorMessages.indexOf($.solrValidatorMessages.get("InvalidNotUsage")) == -1) {
-                this.errorMessages.push($.solrValidatorMessages.get("InvalidNotUsage"));
-            }
-        }
-        // remove paterns that are valid
-        queryToCheck = this.removeValidPhrasePatterns(queryToCheck);
-        if (this.UseConsoleLog) {
-            console.log("checkStartingWithANot (2)", queryToCheck)
-        }
-        // check remaining query
-        if (queryToCheck != "") {
-            matches2 = queryToCheck.match(/^(\s{0,})([N|n][O|o][T|t])(\s{0,})$/);
-            if (matches2 != null) {
-                if (this.errorMessages.indexOf($.solrValidatorMessages.get("InvalidNotUsage")) == -1) {
-                    this.errorMessages.push($.solrValidatorMessages.get("InvalidNotUsage"));
-                }
-            }
-        }
-    },
-
 
     checkParentheses: function (queryToCheck) {
         queryToCheck = typeof queryToCheck !== 'undefined' ? queryToCheck : this.query;
